@@ -3133,7 +3133,7 @@ void cv::resize( InputArray _src, OutputArray _dst, Size dsize,
         0
     };
 
-    static ResizeFunc cubic_tab[] =
+    static ResizeFunc* cubic_tab = linear_tab;/*
     {
         resizeGeneric_<
             HResizeCubic<uchar, int, short>,
@@ -3159,9 +3159,9 @@ void cv::resize( InputArray _src, OutputArray _dst, Size dsize,
             VResizeCubic<double, double, float, Cast<double, double>,
             VResizeNoVec> >,
         0
-    };
+    };*/
 
-    static ResizeFunc lanczos4_tab[] =
+    static ResizeFunc* lanczos4_tab = linear_tab; /*
     {
         resizeGeneric_<HResizeLanczos4<uchar, int, short>,
             VResizeLanczos4<uchar, int, short,
@@ -3182,7 +3182,7 @@ void cv::resize( InputArray _src, OutputArray _dst, Size dsize,
             VResizeLanczos4<double, double, float, Cast<double, double>,
             VResizeNoVec> >,
         0
-    };
+    };*/
 
     static ResizeAreaFastFunc areafast_tab[] =
     {
@@ -3196,7 +3196,7 @@ void cv::resize( InputArray _src, OutputArray _dst, Size dsize,
         0
     };
 
-    static ResizeAreaFunc area_tab[] =
+    static ResizeAreaFunc area_tab[] = 
     {
         resizeArea_<uchar, float>, 0, resizeArea_<ushort, float>,
         resizeArea_<short, float>, 0, resizeArea_<float, float>,
