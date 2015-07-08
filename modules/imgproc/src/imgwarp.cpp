@@ -4630,7 +4630,7 @@ void cv::remap( InputArray _src, OutputArray _dst,
         remapNearest<uchar>, remapNearest<schar>, remapNearest<ushort>, remapNearest<short>,
         remapNearest<int>, remapNearest<float>, remapNearest<double>, 0
     };
-
+/*
     static RemapFunc linear_tab[] =
     {
         remapBilinear<FixedPtCast<int, uchar, INTER_REMAP_COEF_BITS>, RemapVec_8u, short>, 0,
@@ -4657,7 +4657,7 @@ void cv::remap( InputArray _src, OutputArray _dst,
         remapLanczos4<Cast<float, float>, float, 1>,
         remapLanczos4<Cast<double, double>, float, 1>, 0
     };
-
+*/
     CV_Assert( _map1.size().area() > 0 );
     CV_Assert( _map2.empty() || (_map2.size() == _map1.size()));
 
@@ -4729,13 +4729,14 @@ void cv::remap( InputArray _src, OutputArray _dst,
     }
     else
     {
+        /*HACK
         if( interpolation == INTER_LINEAR )
             ifunc = linear_tab[depth];
         else if( interpolation == INTER_CUBIC )
             ifunc = cubic_tab[depth];
         else if( interpolation == INTER_LANCZOS4 )
             ifunc = lanczos4_tab[depth];
-        else
+        else*/
             CV_Error( CV_StsBadArg, "Unknown interpolation method" );
         CV_Assert( ifunc != 0 );
         ctab = initInterTab2D( interpolation, fixpt );
