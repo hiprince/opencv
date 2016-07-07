@@ -1858,6 +1858,7 @@ private:
 void cv::resize( InputArray _src, OutputArray _dst, Size dsize,
                  double inv_scale_x, double inv_scale_y, int interpolation )
 {
+/*HACK
     static ResizeFunc linear_tab[] =
     {
         resizeGeneric_<
@@ -1891,7 +1892,6 @@ void cv::resize( InputArray _src, OutputArray _dst, Size dsize,
                 VResizeNoVec> >,
         0
     };
-
     static ResizeFunc cubic_tab[] =
     {
         resizeGeneric_<
@@ -1961,7 +1961,7 @@ void cv::resize( InputArray _src, OutputArray _dst, Size dsize,
         resizeArea_<short, float>, 0, resizeArea_<float, float>,
         resizeArea_<double, double>, 0
     };
-
+HACK*/
     Mat src = _src.getMat();
     Size ssize = src.size();
 
@@ -2019,12 +2019,13 @@ void cv::resize( InputArray _src, OutputArray _dst, Size dsize,
     }
 #endif
 */
+    interpolation = INTER_NEAREST;
     if( interpolation == INTER_NEAREST )
     {
         resizeNN( src, dst, inv_scale_x, inv_scale_y );
         return;
     }
-
+/*HACK
     {
         int iscale_x = saturate_cast<int>(scale_x);
         int iscale_y = saturate_cast<int>(scale_y);
@@ -2219,6 +2220,7 @@ void cv::resize( InputArray _src, OutputArray _dst, Size dsize,
 
     func( src, dst, xofs, fixpt ? (void*)ialpha : (void*)alpha, yofs,
           fixpt ? (void*)ibeta : (void*)beta, xmin, xmax, ksize );
+HACK*/
 }
 
 
@@ -3181,7 +3183,7 @@ void cv::remap( InputArray _src, OutputArray _dst,
         remapNearest<uchar>, remapNearest<schar>, remapNearest<ushort>, remapNearest<short>,
         remapNearest<int>, remapNearest<float>, remapNearest<double>, 0
     };
-
+/*HACK
     static RemapFunc linear_tab[] =
     {
         remapBilinear<FixedPtCast<int, uchar, INTER_REMAP_COEF_BITS>, RemapVec_8u, short>, 0,
@@ -3208,7 +3210,7 @@ void cv::remap( InputArray _src, OutputArray _dst,
         remapLanczos4<Cast<float, float>, float, 1>,
         remapLanczos4<Cast<double, double>, float, 1>, 0
     };
-
+HACK*/
     Mat src = _src.getMat(), map1 = _map1.getMat(), map2 = _map2.getMat();
 
     CV_Assert( map1.size().area() > 0 );
@@ -3226,6 +3228,7 @@ void cv::remap( InputArray _src, OutputArray _dst,
     bool fixpt = depth == CV_8U;
     bool planar_input = false;
 
+    interpolation = INTER_NEAREST;
     if( interpolation == INTER_NEAREST )
     {
         nnfunc = nn_tab[depth];
@@ -3233,6 +3236,7 @@ void cv::remap( InputArray _src, OutputArray _dst,
     }
     else
     {
+/*HACK        
         if( interpolation == INTER_AREA )
             interpolation = INTER_LINEAR;
 
@@ -3246,6 +3250,7 @@ void cv::remap( InputArray _src, OutputArray _dst,
             CV_Error( CV_StsBadArg, "Unknown interpolation method" );
         CV_Assert( ifunc != 0 );
         ctab = initInterTab2D( interpolation, fixpt );
+HACK*/
     }
 
     const Mat *m1 = &map1, *m2 = &map2;
